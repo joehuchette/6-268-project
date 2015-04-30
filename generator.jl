@@ -60,28 +60,22 @@ function graph_generator(N, α, β)
 	return gr
 end
 
-function plot_graph(gr::Graph)
+function plot_graph(gr::Graph; labels=Any[])
 	am = full(adjacency_matrix(gr))
 	loc_x, loc_y = layout_spring_adj(am)
-	draw_layout_adj(am, loc_x, loc_y, filename="lattice-with-jumps.svg")
+	draw_layout_adj(am, loc_x, loc_y, filename="lattice-with-jumps.svg", labels=labels)
 end
 
-function plot_graph_grid(gr::Graph)
+function plot_graph_grid(gr::Graph; labels=Any[])
 	am = full(adjacency_matrix(gr))
 	V = length(vertices(gr))
 	N = convert(Int, (sqrt(V) - 1) / 2)
-	lx, ly = Float64[]
+	lx, ly = Float64[], Float64[]
 	for i = 1:V
 		push!(lx,linear_to_grid(i,N)[1])
 		push!(ly,linear_to_grid(i,N)[2])
 	end
-	draw_layout_adj(am, lx, ly, filename="lattice-wtih-jumps.svg")
-end
-
-function plot_graph(gr::Graph, weights)
-	am = full(adjacency_matrix(gr))
-	loc_x, loc_y = layout_spring_adj(am)
-	draw_layout_adj(am, loc_x, loc_y, filename="lattice-with-jumps.svg", labels=weights)
+	draw_layout_adj(am, lx, ly, filename="lattice-wtih-jumps.svg", labels=labels)
 end
 
 # function distances_to_origin(gr)
@@ -112,7 +106,6 @@ function assign_population(gr, M, γ, δ)
 				break
 			end
 		end
-		@show linear_to_grid(i,N)
 		pop[i] += 1
 		qtot -= q[i]
 		q[i] = 1 / (dist[i]^γ * (pop[i]+1)^δ)
