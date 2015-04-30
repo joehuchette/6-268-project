@@ -66,6 +66,18 @@ function plot_graph(gr::Graph)
 	draw_layout_adj(am, loc_x, loc_y, filename="lattice-with-jumps.svg")
 end
 
+function plot_graph_grid(gr::Graph)
+	am = full(adjacency_matrix(gr))
+	V = length(vertices(gr))
+	N = convert(Int, (sqrt(V) - 1) / 2)
+	lx, ly = Float64[]
+	for i = 1:V
+		push!(lx,linear_to_grid(i,N)[1])
+		push!(ly,linear_to_grid(i,N)[2])
+	end
+	draw_layout_adj(am, lx, ly, filename="lattice-wtih-jumps.svg")
+end
+
 function plot_graph(gr::Graph, weights)
 	am = full(adjacency_matrix(gr))
 	loc_x, loc_y = layout_spring_adj(am)
