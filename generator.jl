@@ -11,8 +11,9 @@ function graph_generator(N, α, β)
 		return (i,j)
 	end
 
-	grid_to_linear(i, j) = (j+N) * (2N+1) + (i+N) + 1
+	grid_to_linear(i, j) = (j+N) * (2N+1) + (i+N) + 1	
 
+	# step 1: create the underlying lattice
 	gr = Graph((2N+1)^2)
 	for i in -N:(N-1), j in -N:(N-1)
 		add_edge!(gr, grid_to_linear(i,j), grid_to_linear(i+1,j))
@@ -23,15 +24,23 @@ function graph_generator(N, α, β)
 		add_edge!(gr, grid_to_linear(i,N), grid_to_linear(i+1,N))
 	end
 
+	# step 2: add shortcuts
+	# for each edge to add (of which there are N^\alpha)
+	# we pick one endpoint uniformly at random
+	# and the other (by acceptance-rejection) with probability
+	# proportional to (link length)^-\beta
 	du = DiscreteUniform(-N, N)
 	for _ in 1:floor(N^α)
+		# first endpoint
 		i, j = rand(du), rand(du)
+		# find normalizing constant
 		c = 0.0
 		for ei in -N:N, ej in -N:N
 			if (i,j) != (ei,ej) #i != ei || j != ej
 				c += 1 / (abs(i-ei) + abs(j-ej))^β
 			end
 		end
+		# accpetance rejection for other endpoint, break on success
 		while true
 			k, l = rand(du), rand(du)
 			if (k,l) == (i,j) || has_edge(gr, grid_to_linear(i,j), grid_to_linear(k,l))
