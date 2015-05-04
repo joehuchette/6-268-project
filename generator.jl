@@ -1,4 +1,4 @@
-using LightGraphs, Distributions, GraphLayout, Compose
+using LightGraphs, Distributions, GraphLayout, Compose, Gadfly, DataFrames
 
 function linear_to_grid(k, N)
 	i = mod(k-1, 2N+1) - N
@@ -66,10 +66,14 @@ function plot_graph(gr::Graph; labels=Any[])
 	draw_layout_adj(am, loc_x, loc_y, filename="lattice-with-jumps.svg", labels=labels)
 end
 
-function plot_graph_grid(gr::Graph; labels=Any[])
-	am = full(adjacency_matrix(gr))
+function nvert(gr::Graph)
 	V = length(vertices(gr))
 	N = convert(Int, (sqrt(V) - 1) / 2)
+end
+
+function plot_graph_grid(gr::Graph; labels=Any[])
+	am = full(adjacency_matrix(gr))
+	N,V = nvert(gr)
 	lx, ly = Float64[], Float64[]
 	for i = 1:V
 		push!(lx,linear_to_grid(i,N)[1])
@@ -86,8 +90,7 @@ end
 # end
 
 function assign_population(gr, M, γ, δ)
-	V = length(vertices(gr))
-	N = convert(Int, (sqrt(V) - 1) / 2)
+	N,V = nvert(gr)
 	dij = dijkstra_shortest_paths(gr, grid_to_linear(0,0,N))
 	dist = dij.dists
 	q = 1 ./ dist^γ
@@ -112,4 +115,12 @@ function assign_population(gr, M, γ, δ)
 		qtot += q[i]
 	end
 	return pop
+end
+
+function population_heatmap(gr, pop)
+	N,V = nvert(gr)
+	df = DataFrame(x = repeat([-N:N], inner=2N+1),
+				   y = repeat([-N:N], outer=2N+1),
+				   population = vec(pop))
+	plot(df, x="x", y="y", color="population", Geom.rectbin)
 end
