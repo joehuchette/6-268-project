@@ -80,7 +80,7 @@ function plot_graph_grid(gr::Graph; labels=Any[])
 		push!(lx,linear_to_grid(i,N)[1])
 		push!(ly,linear_to_grid(i,N)[2])
 	end
-	draw_layout_adj(am, lx, ly, filename="lattice-wtih-jumps.svg", labels=labels)
+	draw_layout_adj(am, lx, ly, filename="lattice-with-jumps.svg", labels=labels)
 end
 
 # function distances_to_origin(gr)
