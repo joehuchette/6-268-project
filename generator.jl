@@ -69,6 +69,7 @@ end
 function nvert(gr::Graph)
 	V = length(vertices(gr))
 	N = convert(Int, (sqrt(V) - 1) / 2)
+	return N,V
 end
 
 function plot_graph_grid(gr::Graph; labels=Any[])
@@ -119,8 +120,8 @@ end
 
 function population_heatmap(gr, pop)
 	N,V = nvert(gr)
-	df = DataFrame(x = repeat([-N:N], inner=2N+1),
-				   y = repeat([-N:N], outer=2N+1),
+	df = DataFrame(x = repeat([-N:N], outer=[2N+1]),
+				   y = repeat([-N:N], inner=[2N+1]),
 				   population = vec(pop))
 	plot(df, x="x", y="y", color="population", Geom.rectbin)
 end
