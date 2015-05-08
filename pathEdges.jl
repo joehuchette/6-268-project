@@ -7,13 +7,13 @@ function getVertsUsingEdges(gr)
 	N = convert(Int, (sqrt(N)-1)/2)
 	centerInd = convert(Int, ceil(nv(gr)/2))
 	vertPaths = enumerate_paths(dijkstra_shortest_paths(gr,centerInd))
-	
+
 	# for every edge, build up the set of vertices using that edge
 	vertSets = Dict()
 	for testEdge in edges(gr)
 		a = testEdge.first
 		b = testEdge.second
-		vertSets[testEdge] = Int64[]
+		vertSets[testEdge] = Any[]
 		for testV in 1:nv(gr)
 			if issubset((a,b),vertPaths[testV])
 				push!(vertSets[testEdge],
