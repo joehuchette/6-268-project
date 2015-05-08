@@ -1,6 +1,6 @@
 using JuMP
 
-function optimal_allocation(M, N, P, edges β, γ)
+function optimal_allocation(M, N, P, edges, β, γ)
 
 	model = Model()
 

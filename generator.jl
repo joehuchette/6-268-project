@@ -12,7 +12,7 @@ grid_to_linear(i, j, N) = (j+N) * (2N+1) + (i+N) + 1
 # Creates a 2D lattice on [-N,N] × [-N,N]. Adds N^α random shortcuts, where the
 # probability that the edge has a particular length is proportional to the distance
 # to the -β-th power.
-function graph_generator(N, α, β)
+function graph_generator(N, α=1.0, β=1.0)
 
 	g2l(i, j) = grid_to_linear(i, j, N)
 
