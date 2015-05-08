@@ -8,4 +8,4 @@ gr = graph_generator(N)
 M = 10
 
 verts = getVertsUsingEdges(gr)
-optimal_allocation(M, N, verts, keys(verts), 1, 1)
+optimal_allocation(M, N, verts, 1, 1)
