@@ -6,6 +6,7 @@ function optimal_allocation(M, N, P, β, γ)
 
 	@defVar(model, 0 <= v[-N:1:N, -N:1:N] <= M, Int)
 	@defVar(model, aux[keys(P)])
+	@addConstraint(model, v[0,0] == 0)
 
 	for k in keys(P)
 		@addConstraint(model, aux[k] == sum{v[i,j], (i,j) = P[k]})
