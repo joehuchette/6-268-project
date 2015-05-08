@@ -1,7 +1,10 @@
 using LightGraphs
+include("generator.jl")
 
 function getVertsUsingEdges(gr)
 	# find index of origin vertex and paths to that vertex
+	N = nv(gr)
+	N = convert(Int, (sqrt(N)-1)/2)
 	centerInd = convert(Int, ceil(nv(gr)/2))
 	vertPaths = enumerate_paths(dijkstra_shortest_paths(gr,centerInd))
 	
@@ -13,7 +16,8 @@ function getVertsUsingEdges(gr)
 		vertSets[testEdge] = Int64[]
 		for testV in 1:nv(gr)
 			if issubset((a,b),vertPaths[testV])
-				push!(vertSets[testEdge],testV)
+				push!(vertSets[testEdge],
+				      linear_to_grid(testV,N))
 			end
 		end
 	end
