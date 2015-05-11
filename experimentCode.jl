@@ -19,18 +19,21 @@ end
 
 # given a graph and list of populations
 # find the average density by graph distance to origin
-function get_avg_density_by_dist(gr,pops)
+function get_avg_density_by_dist(gr, pops)
 	V = length(vertices(gr))
 	N = convert(Int, (sqrt(V) - 1) / 2)
 	dij = dijkstra_shortest_paths(gr, grid_to_linear(0,0,N))
 	dists = dij.dists
+	maxDist = convert(Int,maximum(dists))
 	mean_pops = mean(pops,1) # mean for each vertex
-	maxDist = 2*N
 	pointsAtDist = zeros(maxDist)
 	peopleAtDist = zeros(maxDist)
 	for i = 1:V
-		peopleAtDist[dists[i] += mean_pops[i]
+		if dists[i] == 0
+			continue
+		end
+		peopleAtDist[dists[i]] += mean_pops[i]
 		pointsAtDist[dists[i]] += 1
 	end
-	return peopleAtDist ./ pointsAtDist
+	return (peopleAtDist ./ pointsAtDist)
 end
