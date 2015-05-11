@@ -149,11 +149,3 @@ function population_heatmap(gr, pop::Union(Dict,JuMP.JuMPDict))
 				   population = vec([pop[i,j] for i in -N:N, j in -N:N]))
 	plot(df, x="x", y="y", color="population", Geom.rectbin)
 end
-
-function graph_objective(edgeMap, pops, beta, gamma, omega)
-	#compute number of users of each edge
-	
-	
-	densityTerm = omega * sum(pops.^2)
-	return densityTerm
-end

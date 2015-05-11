@@ -27,3 +27,21 @@ function getVertsUsingEdges(gr)
 	# all edges are assumed to have unit length
 	return vertSets
 end
+
+function graph_objective(gr, pops, beta, gamma, omega)
+	edgeMap = getVertsUsingEdges(gr)
+	N,V = nvert
+	#compute number of users of each edge
+	numEdge = length(keys(edgeMap))
+	edgeUsers = Float64[]
+	for vertList in values(edgeMap)
+		popUsingEdge = 0
+		for (v1,v2) in vertList
+			
+		end
+	end
+	
+	
+	densityTerm = omega * sum(pops.^2)
+	return densityTerm
+end
