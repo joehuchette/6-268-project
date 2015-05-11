@@ -1,4 +1,4 @@
-using LightGraphs, Distributions, GraphLayout, Compose, Gadfly, DataFrames
+using LightGraphs, Distributions, GraphLayout, Compose, Gadfly, DataFrames, JuMP
 
 function linear_to_grid(k, N)
 	i = mod(k-1, 2N+1) - N
@@ -148,4 +148,12 @@ function population_heatmap(gr, pop::Union(Dict,JuMP.JuMPDict))
 				   y = repeat([-N:N], inner=[2N+1]),
 				   population = vec([pop[i,j] for i in -N:N, j in -N:N]))
 	plot(df, x="x", y="y", color="population", Geom.rectbin)
+end
+
+function graph_objective(edgeMap, pops, beta, gamma, omega)
+	#compute number of users of each edge
+	
+	
+	densityTerm = omega * sum(pops.^2)
+	return densityTerm
 end
