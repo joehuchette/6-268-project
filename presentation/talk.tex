@@ -23,6 +23,7 @@
 \date{May 12, 2015}
 
 \beamertemplatenavigationsymbolsempty 
+\setbeamercovered{transparent}
 
 \begin{document}
 
@@ -31,28 +32,44 @@
 \end{frame}
 
 \begin{frame}
-Why we care about this problem
+\frametitle{Motivation}
+Empirical evidence suggests city structure and road coverage powerfully affect population distributions and demand for vehicle miles traveled. We want to see if simple random graph models can capture some of these relationships.
 \end{frame}
 
 \begin{frame}
-3 step approach
+\frametitle{Approach overview}
 \begin{enumerate}
-\item Create random graph
-\item Randomly populate
-\item Compute optimal population
+\item Create random graph: we represent a city as a finite two-dimensional lattice with random additional edges.
+\item Randomly populate the graph: one-by-one residents arrive at the network and decide which node to live at randomly, combining location and density preferences.
+\item Compute optimal population: we solve the MIQP of locating residents on the graph to minimize density and travel times under a simple static model.
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
 \frametitle{Random graph creation}
-
+\begin{center}
+\includegraphics<1>[width=.5\textwidth]{images/lattice_no_jumps.pdf}
+\includegraphics<2>[width=.5\textwidth]{images/lattice_only_jumps.pdf}
+\includegraphics<3>[width=.5\textwidth]{images/lattice_with_jumps.pdf}
+\end{center}
+\begin{enumerate}
+\item<1,3> Create a lattice on $[-N,N] \times [-N, N]$
+\item<2-> Add $\lfloor N^\alpha \rfloor$ extra edges with one endpoint $u$ chosen uniformly at random and other endpoint $v$ chosen with probability proportional to $d(u,v)^{-\beta}$
+\end{enumerate}
 \end{frame}
 
 \begin{frame}
 \frametitle{Random graph population}
-
+\begin{itemize}
+\item $d(v)$: lattice distance from vertex $v$ to the origin
+\item $p(v,t)$: population of vertex $v$ at time $t$; $p(\cdot, 1) = 0$
+\item $\gamma > 0, \delta > 0$ parameters
+\end{itemize}
+At times $t = 1, \ldots, M$ a resident arrives at the network and chooses a non-origin vertex to live at with probability proportional to
+\[
+\frac{1}{d(v)^\gamma \cdot p(v,t)^\delta}
+\]
 \end{frame}
-
 
 \begin{frame}
 \frametitle{Typical result}
