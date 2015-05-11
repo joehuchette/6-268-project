@@ -72,8 +72,26 @@ function nvert(gr::Graph)
 	return N,V
 end
 
-function plot_graph_grid(gr::Graph; labels=Any[], filename="lattice-with-jumps.svg")
+function plot_graph_grid(gr::Graph; labels=Any[], lattice=true, filename="lattice-with-jumps.svg")
 	am = full(adjacency_matrix(gr))
+
+	#if not lattice, remove lattice edges from adjacency matrix
+	if !lattice
+		am = triu(am)
+		N,_ = nvert(gr)
+		g2l(i, j) = grid_to_linear(i, j, N)
+		for i in -N:(N-1), j in -N:(N-1)
+			am[g2l(i,j), g2l(i+1,j)] = 0
+			am[g2l(i,j), g2l(i,j+1)] = 0
+		end
+		for i in -N:(N-1)
+			am[g2l(N,i), g2l(N,i+1)] = 0
+			am[g2l(i,N), g2l(i+1,N)] = 0
+		end
+		am = am + am'
+	end
+
+	am = full(am)
 	N,V = nvert(gr)
 	lx, ly = Float64[], Float64[]
 	for i = 1:V
@@ -92,7 +110,7 @@ end
 function assign_population(gr, M; γ=2.0, δ=2.0)
 	N,V = nvert(gr)
 	dist = distances_to_origin(gr)
-	q = 1 ./ dist.^γ
+	q = 1 ./ (dist.^γ)
 	# Manually say that no-one lives in the center
 	q[grid_to_linear(0,0,N)] = 0.0
 	qtot = sum(q)
