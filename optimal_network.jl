@@ -1,8 +1,8 @@
-using JuMP
+using JuMP, Gurobi
 
 function optimal_allocation(M, N, P, β, γ, ω)
 
-	model = Model()
+	model = Model(solver=GurobiSolver(MIPGap=0.01))
 
 	@defVar(model, 0 <= v[-N:1:N, -N:1:N] <= M, Int)
 	@defVar(model, aux[keys(P)])
