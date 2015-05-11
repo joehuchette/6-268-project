@@ -1,6 +1,0 @@
-# set of experiments to test our network building and populating
-include("generator.jl")
-
-function test_params(N::Int, m::Int, alpha, beta, gamma, delta, reps)
-	gr = graph_generator(N, alpha, beta)
-	
