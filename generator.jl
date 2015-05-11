@@ -72,9 +72,9 @@ function nvert(gr::Graph)
 	return N,V
 end
 
-function plot_graph_grid(gr::Graph; labels=Any[],lattice=true)
-	am = adjacency_matrix(gr)
-	
+function plot_graph_grid(gr::Graph; labels=Any[], lattice=true, filename="lattice-with-jumps.svg")
+	am = full(adjacency_matrix(gr))
+
 	#if not lattice, remove lattice edges from adjacency matrix
 	if !lattice
 		am = triu(am)
@@ -90,7 +90,7 @@ function plot_graph_grid(gr::Graph; labels=Any[],lattice=true)
 		end
 		am = am + am'
 	end
-	
+
 	am = full(am)
 	N,V = nvert(gr)
 	lx, ly = Float64[], Float64[]
@@ -98,7 +98,7 @@ function plot_graph_grid(gr::Graph; labels=Any[],lattice=true)
 		push!(lx, linear_to_grid(i,N)[1])
 		push!(ly,-linear_to_grid(i,N)[2])
 	end
-	draw_layout_adj(am, lx, ly, filename="lattice-with-jumps.svg", labels=labels)
+	draw_layout_adj(am, lx, ly, filename=filename, labels=labels)
 end
 
 function distances_to_origin(gr)
@@ -107,7 +107,7 @@ function distances_to_origin(gr)
 	return dij.dists
 end
 
-function assign_population(gr, M, γ, δ)
+function assign_population(gr, M; γ=2.0, δ=2.0)
 	N,V = nvert(gr)
 	dist = distances_to_origin(gr)
 	q = 1 ./ (dist.^γ)
@@ -134,18 +134,29 @@ function assign_population(gr, M, γ, δ)
 	return pop
 end
 
-function population_heatmap(gr, pop)
+function population_heatmap(gr, pop; filename="population-heatmap.pdf")
 	N,V = nvert(gr)
 	df = DataFrame(x = repeat([-N:N], outer=[2N+1]),
 				   y = repeat([-N:N], inner=[2N+1]),
 				   population = vec(pop))
-	plot(df, x="x", y="y", color="population", Geom.rectbin)
+	p = plot(df, x="x", y="y", color="population", Geom.rectbin)
+	draw(PDF(filename, 4inch, 4inch), p)
 end
 
-function population_heatmap(gr, pop::Union(Dict,JuMP.JuMPDict))
+function population_heatmap(gr, pop::Union(Dict,JuMP.JuMPDict); filename="population-heatmap.pdf")
 	N,V = nvert(gr)
 	df = DataFrame(x = repeat([-N:N], outer=[2N+1]),
 				   y = repeat([-N:N], inner=[2N+1]),
 				   population = vec([pop[i,j] for i in -N:N, j in -N:N]))
-	plot(df, x="x", y="y", color="population", Geom.rectbin)
+	p = plot(df, x="x", y="y", color="population", Geom.rectbin)
+	draw(PDF(filename, 4inch, 4inch), p)
+end
+
+function distance_heatmap(gr, pop::Union(Dict,JuMP.JuMPDict); filename="distance-heatmap.pdf")
+	N,V = nvert(gr)
+	df = DataFrame(x = repeat([-N:N], outer=[2N+1]),
+				   y = repeat([-N:N], inner=[2N+1]),
+				   distance = vec([pop[i,j] for i in -N:N, j in -N:N]))
+	p = plot(df, x="x", y="y", color="distance", Geom.rectbin)
+	draw(PDF(filename, 4inch, 4inch), p)
 end

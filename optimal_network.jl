@@ -1,6 +1,6 @@
 using JuMP, Gurobi
 
-function optimal_allocation(M, N, P; β=1.0, γ=1.0, ω=1.0)
+function optimal_allocation(M, N, P; β=0.0, γ=1.0, ω=1.0)
 
 	model = Model(solver=GurobiSolver(MIPGap=0.01))
 
