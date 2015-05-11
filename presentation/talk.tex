@@ -39,7 +39,7 @@ Empirical evidence suggests city structure and road coverage powerfully affect p
 \begin{frame}
 \frametitle{Approach overview}
 \begin{enumerate}
-\item Create random graph: we represent a city as a finite two-dimensional lattice with random additional edges.
+\item Create random graph: we represent a city as a finite two-dimensional lattice with random additional edges. The origin represents downtown.
 \item Randomly populate the graph: one-by-one residents arrive at the network and decide which node to live at randomly, combining location and density preferences.
 \item Compute optimal population: we solve the MIQP of locating residents on the graph to minimize density and travel times under a simple static model.
 \end{enumerate}
@@ -69,6 +69,7 @@ At times $t = 1, \ldots, M$ a resident arrives at the network and chooses a non-
 \[
 \frac{1}{d(v)^\gamma \cdot p(v,t)^\delta}
 \]
+that is, users are likely to select vertices which are close to the origin and have low population.
 \end{frame}
 
 \begin{frame}
