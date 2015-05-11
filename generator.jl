@@ -78,7 +78,7 @@ function plot_graph_grid(gr::Graph; labels=Any[],lattice=true)
 	#if not lattice, remove lattice edges from adjacency matrix
 	if !lattice
 		am = triu(am)
-		N = convert(Int, (sqrt(nv(gr)) - 1) / 2)
+		N,_ = nvert(gr)
 		g2l(i, j) = grid_to_linear(i, j, N)
 		for i in -N:(N-1), j in -N:(N-1)
 			am[g2l(i,j), g2l(i+1,j)] = 0
