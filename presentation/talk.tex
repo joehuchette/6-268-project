@@ -65,7 +65,7 @@ Empirical evidence suggests city structure and road coverage powerfully affect p
 \item $p(v,t)$: population of vertex $v$ at time $t$; $p(\cdot, 1) = 0$
 \item $\gamma > 0, \delta > 0$ parameters
 \end{itemize}
-At times $t = 1, \ldots, M$ a resident arrives at the network and chooses a non-origin vertex to live at with probability proportional to
+At times $t = 1, \ldots, M$ a resident arrives at the network a7d chooses a non-origin vertex to live at with probability proportional to
 \[
 \frac{1}{d(v)^\gamma \cdot p(v,t)^\delta}
 \]
@@ -73,12 +73,68 @@ that is, users are likely to select vertices which are close to the origin and h
 \end{frame}
 
 \begin{frame}
-\frametitle{Typical result}
+\frametitle{Average density}
+\begin{center}
+\only<1>{\includegraphics[width=.8\textwidth]{images/density0.pdf}}%
+\only<2>{\includegraphics[width=.8\textwidth]{images/density1.pdf}}%
+\only<3>{\includegraphics[width=.8\textwidth]{images/density2.pdf}}%
+\only<4>{\includegraphics[width=.8\textwidth]{images/density3.pdf}}%
 
+\vspace*{-.2cm}
+
+\only<1>{$\delta = 0$}%
+\only<2>{$\delta = 1$}%
+\only<3>{$\delta = 2$}%
+\only<4>{$\delta = 3$}%
+
+\vspace*{.2cm}
+
+Averaged over 10 replications for a network with $N = 10, \; M = 5000, \; \alpha = 1.5, \; \beta = 1, \; \gamma = 1, \; \delta \in \{0,1,2,3\}$
+\end{center}
 \end{frame}
 
 \begin{frame}
-\frametitle{Optimal location example}
+\frametitle{Example results}
+\centering
+\only<1>{Average 1 person per vertex}%
+\only<2>{Average 10 people per vertex}%
+\only<3>{Average 100 people per vertex}%
+
+\includegraphics<1->[width=.3\textwidth]{../plots/distance-1_0-1_5-1-1.pdf}
+\includegraphics<1>[width=.3\textwidth]{../plots/individual-1_0-1_5-1-1.pdf}
+\includegraphics<2>[width=.3\textwidth]{../plots/individual-1_0-1_5-10-1.pdf}
+\includegraphics<3>[width=.3\textwidth]{../plots/individual-1_0-1_5-100-1.pdf}
+\includegraphics<1>[width=.3\textwidth]{../plots/optimal-1_0-1_5-1-1.pdf}
+\includegraphics<2>[width=.3\textwidth]{../plots/optimal-1_0-1_5-10-1.pdf}
+\includegraphics<3>[width=.3\textwidth]{../plots/optimal-1_0-1_5-100-1.pdf}
+
+Distance to origin \hspace*{.6cm} Random location \hspace*{.6cm} Optimal location
+
+\vspace*{.5cm}
+
+For a network with $N = 15, \; \alpha = 1, \; \beta = 1.5$
+\end{frame}
+
+\begin{frame}
+\frametitle{Example results}
+\centering
+\only<1>{Average 1 person per vertex}%
+\only<2>{Average 10 people per vertex}%
+\only<3>{Average 100 people per vertex}%
+
+\includegraphics<1->[width=.3\textwidth]{../plots/distance-2_0-1_5-1-1.pdf}
+\includegraphics<1>[width=.3\textwidth]{../plots/individual-2_0-1_5-1-1.pdf}
+\includegraphics<2>[width=.3\textwidth]{../plots/individual-2_0-1_5-10-1.pdf}
+\includegraphics<3>[width=.3\textwidth]{../plots/individual-2_0-1_5-100-1.pdf}
+\includegraphics<1>[width=.3\textwidth]{../plots/optimal-2_0-1_5-1-1.pdf}
+\includegraphics<2>[width=.3\textwidth]{../plots/optimal-2_0-1_5-10-1.pdf}
+\includegraphics<3>[width=.3\textwidth]{../plots/optimal-2_0-1_5-100-1.pdf}
+
+Distance to origin \hspace*{.6cm} Random location \hspace*{.6cm} Optimal location
+
+\vspace*{.5cm}
+
+For a network with $N = 15, \; \alpha = 2, \; \beta = 1.5$
 \end{frame}
 \end{document}
 
