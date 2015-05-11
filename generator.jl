@@ -72,8 +72,26 @@ function nvert(gr::Graph)
 	return N,V
 end
 
-function plot_graph_grid(gr::Graph; labels=Any[])
-	am = full(adjacency_matrix(gr))
+function plot_graph_grid(gr::Graph; labels=Any[],lattice=true)
+	am = adjacency_matrix(gr)
+	
+	#if not lattice, remove lattice edges from adjacency matrix
+	if !lattice
+		am = triu(am)
+		N = convert(Int, (sqrt(nv(gr)) - 1) / 2)
+		g2l(i, j) = grid_to_linear(i, j, N)
+		for i in -N:(N-1), j in -N:(N-1)
+			am[g2l(i,j), g2l(i+1,j)] = 0
+			am[g2l(i,j), g2l(i,j+1)] = 0
+		end
+		for i in -N:(N-1)
+			am[g2l(N,i), g2l(N,i+1)] = 0
+			am[g2l(i,N), g2l(i+1,N)] = 0
+		end
+		am = am + am'
+	end
+	
+	am = full(am)
 	N,V = nvert(gr)
 	lx, ly = Float64[], Float64[]
 	for i = 1:V
