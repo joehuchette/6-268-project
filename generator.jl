@@ -110,7 +110,7 @@ end
 function assign_population(gr, M, γ, δ)
 	N,V = nvert(gr)
 	dist = distances_to_origin(gr)
-	q = 1 ./ dist^γ
+	q = 1 ./ (dist.^γ)
 	# Manually say that no-one lives in the center
 	q[grid_to_linear(0,0,N)] = 0.0
 	qtot = sum(q)
