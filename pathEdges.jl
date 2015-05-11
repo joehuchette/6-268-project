@@ -29,19 +29,25 @@ function getVertsUsingEdges(gr)
 end
 
 function graph_objective(gr, pops, beta, gamma, omega)
+	#basic data
 	edgeMap = getVertsUsingEdges(gr)
-	N,V = nvert
+	N,V = nvert(gr)
+	g2l(i,j) = grid_to_linear(i,j,N)
+	
 	#compute number of users of each edge
 	numEdge = length(keys(edgeMap))
 	edgeUsers = Float64[]
 	for vertList in values(edgeMap)
 		popUsingEdge = 0
 		for (v1,v2) in vertList
-			
+			popUsingEdge += pops[g2l(v1,v2)]
 		end
+		push!(edgeUsers,popUsingEdge)
 	end
 	
-	
+	#combine objective
+	linearTravelTerm = beta * sum(edgeUsers)
+	quadTravelTerm = gamma * sum(edgeUsers.^2)
 	densityTerm = omega * sum(pops.^2)
-	return densityTerm
+	return densityTerm + quadTravelTerm + linearTravelTerm
 end
