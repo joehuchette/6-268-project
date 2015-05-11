@@ -5,7 +5,7 @@ include("pathEdges.jl")
 N = 2
 gr = graph_generator(N)
 
-M = 10
+M = 200
 
 verts = getVertsUsingEdges(gr)
-optimal_allocation(M, N, verts, 1, 1, 1)
+v = optimal_allocation(M, N, verts)
