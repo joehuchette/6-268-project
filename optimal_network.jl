@@ -19,5 +19,5 @@ function optimal_allocation(M, N, P; β=0.0, γ=1.0, ω=1.0)
 							+ sum{ω*v[i,j]^2, i in -N:N, j in -N:N})
 
 	solve(model)
-	return getValue(v)
+	return getObjectiveValue(model), getValue(v)
 end
